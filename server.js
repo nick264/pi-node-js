@@ -3,8 +3,6 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var sms = require('./sms.js')
 
-const PASSWORD = "letmein"
-
 var app = express()
   , server = require('http').createServer(app)
   , io = io.listen(server)
@@ -28,7 +26,7 @@ app.post('/twilio-sms-handler', function(req, res) {
 	console.log("received sms: from=" + sms_from + ", body=" + sms_body)
 
 	if( io.sockets.server.eio.clientsCount > 0 ) {
-	 	if( sms_body.toLowerCase() == PASSWORD.toLowerCase() ) {
+	 	if( sms_body.toLowerCase() == process.env.BUZZER_PASSWORD.toLowerCase() ) {
 			io.sockets.emit('door-buzzer');
 		  sms.send(sms_from,"Connected to RPi and buzzed you in.  Did that work?");
 		 }
