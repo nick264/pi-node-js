@@ -27,6 +27,14 @@ app.get('/status', function(req,res){
 	}
 });
 
+app.post('/buzztest', function(req,res){
+	if( req.body.password && req.body.password.toLowerCase() == process.env.BUZZER_PASSWORD.toLowerCase() ) {
+		io.sockets.emit('door-buzzer');
+		res.send("OK\n");
+	} else
+		res.send("Incorrect password\n");
+} );
+
 app.post('/twilio-sms-handler', function(req, res) {
 	sms_from = req.body.From
 	sms_body = req.body.Body
@@ -44,7 +52,7 @@ app.post('/twilio-sms-handler', function(req, res) {
 	 else
 	  sms.send(sms_from,"Oops! server not connected to RPi.");
 
-	res.send('OK');
+	res.send("OK\n");
 } );
 
 io.sockets.on('connection', function (socket) {
