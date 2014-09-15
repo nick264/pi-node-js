@@ -1,5 +1,5 @@
-var io = require('socket.io-client');
-var play = require('play');
+var io     = require('socket.io-client');
+var play   = require('play');
 var buzzer = require ('./buzzer.js')
 
 var socket = io.connect('http://nrs-pi-server.herokuapp.com');
@@ -12,3 +12,7 @@ socket.on('door-buzzer', function() {
 	buzzer.buzzWithGpioPin(22,5000);
 
 } );
+
+socket.on('connect', function () { 
+  console.log("Connected to server");
+});

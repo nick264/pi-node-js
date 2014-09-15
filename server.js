@@ -1,7 +1,7 @@
-var io = require('socket.io');
-var express = require('express');
+var io         = require('socket.io');
+var express    = require('express');
 var bodyParser = require('body-parser');
-var sms = require('./sms.js')
+var sms        = require('./sms.js')
 
 var app = express()
   , server = require('http').createServer(app)
@@ -17,6 +17,14 @@ app.use(bodyParser.json());
 
 app.get('/',function(req,res){
   res.send("I am working!\n");
+});
+
+app.get('/status', function(req,res){
+	if( io.sockets.server.eio.clientsCount > 0 ) {
+		res.send("Connected to " + io.sockets.server.eio.clientsCount + " client(s)\n");
+	} else {
+		res.send("Not connected to any clients\n");
+	}
 });
 
 app.post('/twilio-sms-handler', function(req, res) {

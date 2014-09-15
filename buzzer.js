@@ -6,16 +6,17 @@ var gpio = require('rpi-gpio');
 // 	callback();
 // }
 
+// relay turns on when pin is set to 0, turns off when pin is set to 1
 exports.buzzWithGpioPin = function(pin,durationInMs) {
 
 	function onAndOff() {
-		gpio.write(pin, true, function() {
+		gpio.write(pin, false, function() {
 			setTimeout(off, durationInMs);
 		} )
 	}
 
 	function off() {
-		gpio.write(pin, false, close)
+		gpio.write(pin, true, close)
 	}
 
 	function close() {
@@ -26,3 +27,12 @@ exports.buzzWithGpioPin = function(pin,durationInMs) {
 
 	gpio.setup(pin,gpio.DIR_OUT, onAndOff);
 };
+
+// exports.ensureBuzzerIsOff = function(pin) {
+// 	gpio.setup(pin,gpio.DIR_OUT, function() {
+// 		offValue = false;
+// 		gpio.write(pin, offValue, function() {
+// 			console.log("Wrote pin " + pin + " to " + offValue ".  No current should flow.");
+// 		} );
+// 	} );
+// };
