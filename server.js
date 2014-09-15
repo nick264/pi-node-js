@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.get('/',function(req,res){
-   res.send("I am working!\n");
+  res.send("I am working!\n");
 });
 
 app.post('/twilio-sms-handler', function(req, res) {
