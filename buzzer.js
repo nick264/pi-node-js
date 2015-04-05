@@ -6,7 +6,12 @@ var gpio = require('rpi-gpio');
 // 	callback();
 // }
 
-// relay turns on when pin is set to 0, turns off when pin is set to 1
+// typical relays allow you to set up a circuit to be either open or closed by default, depending on which connections you use
+// here we assume that:
+// (1) the relay is connected such that the circuit is open when there's no power to the relay board, such as when the pi is powered off
+// (2) when the pi is on, the GPIO pin outputs HIGH by default
+// (3) with the way we've connected the relay, HIGH input = open circuit, LOW input = closed circuit
+// this ensures that the circuit is only closed when the pi is powered on AND we've explicitly set the GPIO pin to LOW output
 exports.buzzWithGpioPin = function(pin,durationInMs) {
 
 	function onAndOff() {
@@ -27,6 +32,11 @@ exports.buzzWithGpioPin = function(pin,durationInMs) {
 
 	gpio.setup(pin,gpio.DIR_OUT, onAndOff);
 };
+
+exports.relayTest = function(pin) {
+	var stdin = process.openStdin();
+	
+}
 
 // exports.ensureBuzzerIsOff = function(pin) {
 // 	gpio.setup(pin,gpio.DIR_OUT, function() {
